@@ -138,6 +138,5 @@ for pos in range(len(mov_2)):
 
 best_steps -= 1
 
-
 print(best_distance)
 print(best_steps)
