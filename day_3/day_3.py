@@ -10,7 +10,7 @@ def remove_spaces(data):
         return False
     return True  
 
-positions = set()
+positions = {} 
 
 movement_data = movement_data_string.splitlines()
 mov_1_string = movement_data[0]
@@ -39,6 +39,7 @@ for pos in range(len(mov_2)):
 x = STARTING_X_Y
 y = STARTING_X_Y
 
+counter = 0
 
 for pos in range(len(mov_1)):
     direction = mov_1[pos][0]
@@ -47,30 +48,37 @@ for pos in range(len(mov_1)):
     if direction == 'U':
         y_2 = y + steps
         while y < y_2:
+            counter += 1
             y += 1
-            positions.add((x, y))
+            positions[(x, y)] = counter
 
     if direction == 'D':
         y_2 = y - steps
         while y > y_2:
+            counter += 1
             y -= 1
-            positions.add((x, y))
+            positions[(x, y)] = counter
 
     if direction == 'R':
         x_2 = x + steps
         while x < x_2:
+            counter += 1
             x += 1
-            positions.add((x, y))
+            positions[(x, y)] = counter
 
     if direction == 'L':
         x_2 = x - steps
         while x > x_2:
+            counter += 1
             x -= 1
-            positions.add((x, y))
+            positions[(x, y)] = counter
 
 x = STARTING_X_Y
 y = STARTING_X_Y
 
+counter = 0
+best_steps = 'EMPTY'
+current_steps = 0
 
 for pos in range(len(mov_2)):
     direction = mov_2[pos][0]
@@ -79,7 +87,11 @@ for pos in range(len(mov_2)):
     if direction == 'U':
         y_2 = y + steps
         while y < y_2:
-            if (x,y) in positions:
+            counter += 1
+            if (x, y) in positions:
+                current_steps = counter + positions[(x, y)]
+                if best_distance == 'EMPTY' or current_steps < best_steps:
+                    best_steps = current_steps
                 distance = abs(x - STARTING_X_Y) + abs(y - STARTING_X_Y)
                 if best_distance == 'EMPTY' or distance < best_distance:
                     best_distance = distance
@@ -88,7 +100,11 @@ for pos in range(len(mov_2)):
     if direction == 'D':
         y_2 = y - steps
         while y > y_2:
-            if (x,y) in positions:
+            counter += 1
+            if (x, y) in positions:
+                current_steps = counter + positions[(x, y)]
+                if best_distance == 'EMPTY' or current_steps < best_steps:
+                    best_steps = current_steps
                 distance = abs(x - STARTING_X_Y) + abs(y - STARTING_X_Y)
                 if best_distance == 'EMPTY' or distance < best_distance:
                     best_distance = distance
@@ -97,7 +113,11 @@ for pos in range(len(mov_2)):
     if direction == 'R':
         x_2 = x + steps
         while x < x_2:
-            if (x,y) in positions:
+            counter += 1
+            if (x, y) in positions:
+                current_steps = counter + positions[(x, y)]
+                if best_distance == 'EMPTY' or current_steps < best_steps:
+                    best_steps = current_steps
                 distance = abs(x - STARTING_X_Y) + abs(y - STARTING_X_Y)
                 if best_distance == 'EMPTY' or distance < best_distance:
                     best_distance = distance
@@ -106,11 +126,18 @@ for pos in range(len(mov_2)):
     if direction == 'L':
         x_2 = x - steps
         while x > x_2:
-            if (x,y) in positions:
+            counter += 1
+            if (x, y) in positions:
+                current_steps = counter + positions[(x, y)]
+                if best_distance == 'EMPTY' or current_steps < best_steps:
+                    best_steps = current_steps
                 distance = abs(x - STARTING_X_Y) + abs(y - STARTING_X_Y)
                 if best_distance == 'EMPTY' or distance < best_distance:
                     best_distance = distance
             x -= 1
 
+best_steps -= 1
+
 
 print(best_distance)
+print(best_steps)
