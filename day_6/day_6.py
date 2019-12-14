@@ -3,8 +3,6 @@ with open("in.txt", "r") as f:
 def spl(string):
     return string.split(')') 
 
-
-
 def DFS(node, neibours, visited, node_depth):
     node_sum = node_depth
     if node not in visited and node in neibours:
