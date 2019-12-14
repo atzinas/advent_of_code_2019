@@ -3,32 +3,28 @@ with open("in.txt", "r") as f:
 def spl(string):
     return string.split(')') 
 
-
-
 def DFS(node, neibours, visited, node_depth):
-    result = 0
     if node == 'SAN':
-        result = node_depth
+        return node_depth
     if node not in visited and node in neibours:
-        visited.append(node)
+        visited.add(node)
         for neibour in neibours[node]:
-           result += DFS(neibour, neibours, visited, node_depth + 1)
-    return result; 
+            dist = DFS(neibour, neibours, visited, node_depth + 1)
+            if dist is not None:
+                return dist
 
 data_string = list(map(spl, data_string))
 
 neibours = {}
 
-for data in data_string:
-    if data[0] not in neibours:
-        neibours[data[0]] = [data[1]]
-    else:
-        neibours[data[0]].append(data[1])  
-    if data[1] not in neibours:
-        neibours[data[1]] = [data[0]]
-    else:
-        neibours[data[1]].append(data[0])  
-visited = []
+for left, right in data_string:
+    if left not in neibours:
+        neibours[left] = []
+    neibours[left].append(right)  
+    if right not in neibours:
+        neibours[right] = []
+    neibours[right].append(left)  
+visited = set()
 depth = DFS('YOU', neibours, visited, 0)
 
 print(depth - 2)
